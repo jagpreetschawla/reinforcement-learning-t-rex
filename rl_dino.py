@@ -6,8 +6,6 @@ import numpy as np
 import webbrowser
 import time
 import pyautogui as pag
-import PIL as pil
-import numpy as np
 import cv2
 from collections import deque
 import tensorflow as tf
