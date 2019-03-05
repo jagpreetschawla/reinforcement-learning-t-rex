@@ -1,6 +1,11 @@
 # Outline
 This project trains a basic NN to play chrome's `T-rex` game (the game that is displayed on the offline page of chrome browser). The aim of the project was to take a simple Neural Network and supervised training method (backpropagation using Adam) and experiment with applying it for a reinforcement learning task. No specific Reinforcement learning theory or algorithm is used in this project. It simply uses a NN trained using Adam Optimizer. Since we don't know the expected output for the NN, some basic heuristics are used to guide the network in the right direction.
 
+![Screenshots from game played by NN](http://www.cylopsis.com/img/t-rex-snippet.png)
+*Snippets from the game played by NN. It figured out that it needs to jump over cactus and birds and even learned that ducking is enough to avoid high flying birds.*
+
+For more details than mentioned here, checkout my [blog post][post].
+
 # To run the code
 My program uses the following dependencies:
 
@@ -12,6 +17,8 @@ My program uses the following dependencies:
 You can either install these manually or use the requirments.txt file in a virtual env.
 
 The program will launch a browser and open the `T-rex` game. The game is cloned from [this][game] repo. If the program is unable to find a browser, you can pass the browser's path a parameter to the program. If the browser can't find the file, make sure that the git sub-repository at `t-rex-runner-gh-pages` folder is initialized and ready.
+
+> **Note** The code uses template matching to find and detect game over. Template will matching on screen resolution and browser window size. If it fails, please change the `dino.png` and `dino_game_over.png` with new screenshots from your computer using browser window size that you expect when the code runs.
 
 Once the page opens, the program will start controlling mouse and keyboard after a few seconds to play the game. Please don't touch the keyboard or mouse at this time to make sure that the program doesn't input in the wrong window.
 
@@ -28,11 +35,15 @@ The training takes place after every 2 games. For every game, we are storing the
 
 The algorithm saves up to last 3000 moves of every game. At the end of the game, the last few frames are held responsible for the death of our t-rex as t-rex was doing well just before the last few moves.
 
-[game]: http://wayou.github.io/t-rex-runner/
-
-Now we reinforce the network to keep doing what it was doing before these last few moves because that's what kept him alive. So we just take the predicted output (whichever had the max probability) and reinforce it by training network with this as expected output but with probability 1.
+Now we reinforce the network to keep doing what it was doing before these last few moves because that's what kept him alive. So we just take the predicted output (whichever had the max probability) and reinforce it by training network with this as expected output but with high probability (I used 0.9, more details are mentioned [here][heuristics]).
 
 Handling the last few moves was more tricky. Here we know what should not be the output, but don't know about the correct output. So we should just focus on discouraging these moves and hope that this with correct moves reinforcement will handle these cases. So for these last few moves, we discourage the network by training it with these moves probability to be close to zero. The remaining probability is split among remaining moves as we don't know which of these was the right one.
 
 ## Loss function
 Since we don't know the exact output, I didn't use log loss which imposes a high penalty for wrong probabilities. Instead, I used a simple mean square error, this way if our heuristic method is wrong for some inputs, we are not imposing a very high penalty.
+
+**Read my [blog post][post] for more details.**
+
+[post]: http://www.cylopsis.com/post/reinforcement-learning/t-rex-game/
+[game]: http://wayou.github.io/t-rex-runner/
+[heuristics]: http://www.cylopsis.com/post/reinforcement-learning/t-rex-game/#heuristic
