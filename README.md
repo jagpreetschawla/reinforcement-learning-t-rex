@@ -18,7 +18,7 @@ You can either install these manually or use the requirments.txt file in a virtu
 
 The program will launch a browser and open the `T-rex` game. The game is cloned from [this][game] repo. If the program is unable to find a browser, you can pass the browser's path a parameter to the program. If the browser can't find the file, make sure that the git sub-repository at `t-rex-runner-gh-pages` folder is initialized and ready.
 
-> **Note** The code uses template matching to find and detect game over. Template will matching on screen resolution and browser window size. If it fails, please change the `dino.png` and `dino_game_over.png` with new screenshots from your computer using browser window size that you expect when the code runs.
+> **Note** The code uses template matching to find the game and detect game-over. Template matching will depend on screen resolution and browser window size. If it fails, please change the `dino.png` and `dino_game_over.png` with new screenshots from your computer using browser window size that you expect when the code runs.
 
 Once the page opens, the program will start controlling mouse and keyboard after a few seconds to play the game. Please don't touch the keyboard or mouse at this time to make sure that the program doesn't input in the wrong window.
 
